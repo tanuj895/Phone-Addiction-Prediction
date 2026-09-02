@@ -70,6 +70,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 print("\nTraining data:",X_train.shape)
 print("Testing data:",X_test.shape)
 
+"""using sklearn's ColumnTransformer to preprocess categorical features using OneHotEncoder. 
+The remainder of the columns will be passed through without any changes."""
 
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
