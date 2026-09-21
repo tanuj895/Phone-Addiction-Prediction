@@ -37,7 +37,7 @@ print(df["addicted_label"].value_counts())
 
 print(pd.crosstab(df["addiction_level"], df["addicted_label"], dropna=False))
 
-#removing useless columns
+# removing useless columns
 df_model=df.drop(columns=["transaction_id","user_id","addiction_level"])
 
 print("\n Columns after dropping useless columns:")
@@ -75,13 +75,13 @@ The remainder of the columns will be passed through without any changes."""
 
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import StandardScaler
 categorical_columns=["gender","stress_level","academic_work_impact"]
 preprocessor = ColumnTransformer(
     transformers=[
         ("categorical",OneHotEncoder(handle_unknown="ignore"),categorical_columns)
     ],
-    remainder="passthrough"
-
+    remainder=StandardScaler()
 )
 
 X_train_processed = preprocessor.fit_transform(X_train)
@@ -89,3 +89,15 @@ X_test_processed = preprocessor.transform(X_test)
 
 print("\nProcessed training data shape:", X_train_processed.shape)
 print("Processed testing data shape:", X_test_processed.shape)
+
+# Training Model
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+model = LogisticRegression(max_iter=1000)
+
+model.fit(X_train_processed, y_train)
+
+y_pred = model.predict(X_test_processed)
+print("\nPredictions:")
+print(y_pred)
